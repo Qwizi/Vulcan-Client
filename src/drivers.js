@@ -6,10 +6,12 @@ const {getAllInstalledSoftware} = require('fetch-installed-software')
 const AdmZip = require('adm-zip');
 const {Builder, Capabilities} = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
+const edge = require('selenium-webdriver/edge');
+const {logger} = require('./logger');
 
 
 const fileAccess = util.promisify(fs.access);
-const fileDelete = util.promisify(fs.unlink)
+
 // Pobieramy wszystkie zainstalowane przegladarki
 const getInstalledBrowsers = async () => {
     const browsers = [];
@@ -23,6 +25,8 @@ const getInstalledBrowsers = async () => {
 
     const edge = softs.find((soft) => soft.displayName === 'Microsoft Edge');
     if (edge) browsers.push({name: 'edge', details: edge, filename: 'msedgedriver.exe'})
+    logger.info(`Dostepne przeglaraki ${JSON.stringify(browsers)}`)
+
     return browsers
 }
 
@@ -179,6 +183,30 @@ class OperaDriver extends DriverManager
         return new Builder()
             .withCapabilities(Capabilities.chrome())
             .build()
+    }
+}
+
+class EdgeDriver extends DriverManager
+{
+    async downloadDriver() {
+        console.log(this.data);
+    }
+
+    async getDriver() {
+        try {
+            await fileAccess(this.getPath(), fs.F_OK)
+            console.log('Plik istnieje')
+        } catch (err) {
+            console.log('Plik nie istnieje, musimy go pobrac')
+            await this.downloadDriver()
+        }
+
+        try {
+            let service = new edge.ServiceBuilder(path.join('drivers', 'msedgedriver.exe')).build()
+            edge.setDefaultService(service)
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 

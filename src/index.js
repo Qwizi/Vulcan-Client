@@ -1,28 +1,28 @@
-const path = require('path')
 const io = require('socket.io-client');
 const ss = require('screenshot-desktop');
 const {v4: uuidv4} = require('uuid');
+const {By, until} = require('selenium-webdriver');
+const ks = require('node-key-sender');
+const Shell = require('node-powershell');
+const {logger} = require('./logger');
 const {getDriver} = require('./drivers');
 const {getSystemInfo} = require('./systemInfo');
-const {By, until, key} = require('selenium-webdriver');
-const ks = require('node-key-sender');
-const {exec} = require('child_process');
-const Shell = require('node-powershell');
 
 const socket = io('http://localhost:3000/clients');
 
-socket.on('connect', () => {
-    console.log('Connected')
+socket.on('connect', (data) => {
+    logger.info('Klient polaczony');
 });
 
 socket.on('disconnect', () => {
-    console.log('Disconnected') // false
+    logger.info('Klient rozlaczony');
 });
 
 socket.on('screenshot', () => {
     ss({format: 'png'}).then((img) => {
         const filename = `${uuidv4()}.png`;
         socket.emit('get_screenshoot', {img: img, filename: filename})
+        logger.info('Zrobiono zrzut ekranu')
     })
 })
 
@@ -72,7 +72,7 @@ socket.on('website', (data) => {
 
 socket.on('systemInfo', () => {
     (async () => {
-        console.log('Manager chce info o systemie');
+        logger.info('Manager chce informacje o systemie')
         const data = await getSystemInfo();
         // Przesylamy info do servera
         socket.emit('systemInfo', data);

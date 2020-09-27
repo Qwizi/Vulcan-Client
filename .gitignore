@@ -2,5 +2,5 @@
 /node_modules
 product
 *.log
-/src/drivers/*
-!/src/drivers/.gitkeep
+src/drivers/*
+!src/drivers/.gitkeep
