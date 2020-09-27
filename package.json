@@ -1,0 +1,28 @@
+{
+  "name": "client_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "adm-zip": "^0.4.16",
+    "axios": "^0.20.0",
+    "fetch-installed-software": "^0.0.6",
+    "nexe": "^3.3.7",
+    "node-powershell": "^4.0.0",
+    "pkg": "^4.4.9",
+    "screenshot-desktop": "^1.12.2",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "socket.io-client": "^2.3.0",
+    "systeminformation": "^4.27.3",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "node-key-sender": "^1.0.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "pkg package.json -t node12-win-x64 --out-path dist"
+  },
+  "author": "",
+  "license": "ISC"
+}
