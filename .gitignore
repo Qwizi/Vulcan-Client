@@ -4,3 +4,4 @@ product
 *.log
 src/drivers/*
 !src/drivers/.gitkeep
+src/daemon/*

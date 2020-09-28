@@ -66,6 +66,7 @@ socket.on('website', (data) => {
             }
         } finally {
             socket.emit('website')
+            logger.info('Otworzono strone')
         }
     })();
 })
